@@ -5,7 +5,7 @@ import os
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-image = Image.open(dir_path + '/image2.jpg')
+image = Image.open(dir_path + '/cat.jpg')
 image.show()
 image = np.array(image)
 shapeRoot = image.shape

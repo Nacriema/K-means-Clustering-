@@ -1,11 +1,17 @@
+# Chu minh lam ro so sanh thu voi ket qua minh dat duoc, tach lop ra, xong roi minh Kmeans 8 cum moi lop, sau do ep no
+# vao lai
+
 from PIL import Image
 import numpy as np
 from sklearn.cluster import KMeans
+import os
 
-
-image1 = Image.open('image2.jpg')
+dir_path = os.path.dirname(os.path.realpath(__file__))
+image1 = Image.open(dir_path + '/cat.jpg')
+# image1 = Image.open('cat.jpg')
 image1.show()
 image2 = np.array(image1)
+shapeRoot = image2.shape
 
 # Lay 3 kenh mau cua no ra, moi kenh mau kmeans ra 2 cum
 image2_red = image2[:, :, 0]
@@ -28,9 +34,9 @@ print(image3_red.shape)
 print(image3_red)
 print(type(image3_red))
 
-kmeans_red = KMeans(n_clusters=2, max_iter=600, random_state=0).fit(image3_red)
-kmeans_green = KMeans(n_clusters=2, max_iter=600, random_state=0).fit(image3_green)
-kmeans_blue = KMeans(n_clusters=2, max_iter=600, random_state=0).fit(image3_blue)
+kmeans_red = KMeans(n_clusters=2, max_iter=300, random_state=0).fit(image3_red)
+kmeans_green = KMeans(n_clusters=2, max_iter=300, random_state=0).fit(image3_green)
+kmeans_blue = KMeans(n_clusters=2, max_iter=300, random_state=0).fit(image3_blue)
 
 
 print('Nhan: ', len(kmeans_red.labels_))
@@ -75,9 +81,16 @@ img_out_blue.show()
 img_end = np.dstack((image_result_red, image_result_green, image_result_blue))
 img_end = img_end.astype("uint8")
 
-print(img_end)
-(unique, count) = np.unique(img_end, return_counts=True)
-print(np.asarray((unique, count)).T)
-print('Chieu Image cuoi: ', img_end.shape)
+rs_list = img_end.reshape((shapeRoot[0] * shapeRoot[1]), shapeRoot[2])
+# print(img_end)
+# (unique, count) = np.unique(img_end, return_counts=True)
+# print(np.asarray((unique, count)).T)
+# print('Chieu Image cuoi: ', img_end.shape)
 img_end_end = Image.fromarray(img_end, 'RGB')
+
+unique_rows = np.unique(rs_list, axis=0)
+print('Danh sách màu trong bức ảnh: ')
+print(unique_rows)
+print('So mau trong tam anh: ', len(unique_rows))
+
 img_end_end.show()
